@@ -1,4 +1,7 @@
 locals {
+  enabled_w_log = "${var.enabled && var.logging_enabled ? true : false}"
+  enabled_no_log = "${var.enabled && ! var.logging_enabled ? true : false}"
+
   target_groups_default_configs = {
     cookie_duration                  = 86400
     deregistration_delay             = 300

@@ -1,10 +1,11 @@
 terraform {
-  required_version = "= 0.11.7"
+  required_version = "= 0.11.11"
 }
 
 provider "aws" {
   version = ">= 1.17.0"
   region  = "${var.region}"
+  profile = "dev"
 }
 
 provider "random" {
@@ -90,9 +91,10 @@ resource "aws_launch_configuration" "as_conf" {
 
 module "alb" {
   source                   = "../.."
+  enabled = true
   load_balancer_name       = "test-alb-${random_string.suffix.result}"
   security_groups          = ["${module.security_group.this_security_group_id}"]
-  logging_enabled          = true
+  logging_enabled          = false
   log_bucket_name          = "${aws_s3_bucket.log_bucket.id}"
   log_location_prefix      = "${var.log_location_prefix}"
   subnets                  = "${module.vpc.public_subnets}"
